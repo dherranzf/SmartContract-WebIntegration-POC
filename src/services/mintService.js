@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
-import { CONTRACT_ABI } from './resources/contractABI';
-import { switchToBaseNetwork } from './services/networkService';
+import { CONTRACT_ABI } from '../resources/contractABI';
+import { switchToBaseNetwork } from './networkService';
 
 export async function mintToken(isConnected, setIsMinting, CONTRACT_ADDRESS, BASE_CHAIN_ID) {
     if (!isConnected) return;
