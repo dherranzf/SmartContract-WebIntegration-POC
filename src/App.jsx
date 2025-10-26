@@ -1,110 +1,38 @@
 import React, { useState } from 'react'
-import { ethers } from 'ethers'
 import { CONTRACT_ABI } from './resources/contractABI'
+import { switchToBaseNetwork } from './networkUtils'
+import { connectWallet } from './walletUtils'
+import { mintToken } from './mintUtils'
+import MainMint from './components/MainMint'
+import './styles/main.css'
 
 //Contract Configuration
-const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
-const BASE_CHAIN_ID = import.meta.env.VITE_BASE_CHAIN_ID;
+if (!CONTRACT_ADDRESS || !BASE_CHAIN_ID) {
+  throw new Error('Env variables not find: VITE_CONTRACT_ADDRESS o VITE_BASE_CHAIN_ID');
+}
 
 function App() {
     const [account, setAccount] = useState('');
-    const [isConnected, setisConnected] = useState(false);
+    const [isConnected, setIsConnected] = useState(false);
     const [isMinting, setIsMinting] = useState(false);
 
-  // Connect to MetaMask
-    const connectWallet = async () => {
-        if (!window.ethereum) {
-        alert('Please install MetaMask!')
-        return
-        }
+    const handleConnectWallet = async () => {
+        await connectWallet(setAccount, setIsConnected, BASE_CHAIN_ID);
+    };
 
-        try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-        const account = accounts[0]
-        
-        // Switch to Base Network
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' })
-
-        if (chainId !== BASE_CHAIN_ID) {
-            try {
-            await window.ethereum.request({
-                method: 'wallet_switchEthereumChain',
-                params: [{ chainId: BASE_CHAIN_ID }],
-            })
-            } catch (switchError) {
-            if (switchError.code === 4902) {
-                // Chain not added, request to add it
-                await window.ethereum.request({
-                method: 'wallet_addEthereumChain',
-                params: [{
-                    chainId: BASE_CHAIN_ID,
-                    chainName: 'Base Network',
-                    nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-                    rpcUrls: ['https://base-rpc.network/'],
-                    blockExplorerUrls: ['https://basescan.org/']
-                }]
-                })
-            }
-            }
-        }
-        setAccount(account)
-        setIsConnected(true)
-    
-        } catch (error) {
-        console.error('Connection error:', error)
-        alert('Failed to connect')
-        }
-    }
-
-     // Mint token
-    const mintToken = async () => {
-        if (!isConnected) return
-        
-        setIsMinting(true)
-        
-        try {
-        const provider = new ethers.BrowserProvider(window.ethereum)
-        const signer = await provider.getSigner()
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer)
-        
-        const tx = await contract.mintBAC()
-        await tx.wait()
-        
-        alert('Token minted!')
-        
-        
-        } catch (error) {
-        console.error('Mint error:', error)
-        alert('Minting failed')
-        } finally {
-        setIsMinting(false)
-        }
-    }
+    const handleMintToken = async () => {
+        await mintToken(isConnected, setIsMinting, CONTRACT_ADDRESS, BASE_CHAIN_ID);
+    };
 
     return (
-    <div className="container">
-      <h1>Blockchain Accelerator</h1>
-      
-      {!isConnected ? (
-        <button onClick={connectWallet}>
-          Connect MetaMask
-        </button>
-      ) : (
-        <div>
-          <p>Connected: {account.slice(0, 6)}...{account.slice(-4)}</p>
-
-          <button 
-            onClick={mintToken} 
-            disabled={isMinting}
-          >
-            {isMinting ? 'Minting...' : 'Mint Token'}
-          </button>
-        </div>
-      )}
-    </div>
-  )
-
+      <MainMint
+        account={account}
+        isConnected={isConnected}
+        isMinting={isMinting}
+        handleConnectWallet={handleConnectWallet}
+        handleMintToken={handleMintToken}
+      />
+    );
 }
-
 
 export default App
