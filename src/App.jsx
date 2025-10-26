@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { ethers } from 'ethers'
 import { CONTRACT_ABI } from './resources/contractABI'
 
-//Conract Configuration
-const CONTRACT_ADDRESS = '0xYourContractAddressHere'
-const BASE_CHAIN_ID = '0xASD'
+//Contract Configuration
+const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
+const BASE_CHAIN_ID = import.meta.env.VITE_BASE_CHAIN_ID;
 
 function App() {
     const [account, setAccount] = useState('');
