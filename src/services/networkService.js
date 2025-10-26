@@ -17,7 +17,7 @@ export async function switchToBaseNetwork(BASE_CHAIN_ID) {
                         chainId: BASE_CHAIN_ID,
                         chainName: 'Base Network',
                         nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-                        rpcUrls: ['https://base-rpc.network/'],
+                        rpcUrls: ['https://mainnet.base.org/'],
                         blockExplorerUrls: ['https://basescan.org/']
                     }]
                 });

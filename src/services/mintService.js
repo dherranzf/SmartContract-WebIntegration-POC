@@ -10,10 +10,18 @@ export async function mintToken(isConnected, setIsMinting, CONTRACT_ADDRESS, BAS
     try {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
+        const wallet = await signer.getAddress();
+        if (!wallet) throw new Error('Unable to get wallet address from signer');
         const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-        const tx = await contract.mintBAC();
+        // Read ERC20 decimals and compute scaled amount for minting
+        const decimalsRaw = await contract.decimals();
+        const decimals = typeof decimalsRaw === 'bigint' ? Number(decimalsRaw) : Number(decimalsRaw);
+        const scalingFactor = BigInt(10) ** BigInt(decimals);
+        // Default token amount is 100 tokens, scaled by decimals for uint256 parameter
+        const mintAmount = BigInt(100) * scalingFactor;
+        const tx = await contract.mint(wallet, mintAmount);
         await tx.wait();
-        alert('Token minted!');
+        alert(`Token(s) minted: ${mintAmount} to ${wallet}`);
         return tx;
     } catch (error) {
         console.error('Mint error:', error);
