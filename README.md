@@ -1,6 +1,8 @@
-#  PoC Ether.JS — Mint Frontend and Smart Contract Integration
+#  🌐⛓️ PoC React + Ether.JS — Mint Frontend and Smart Contract Integration
 
 A technology-focused proof-of-concept demonstrating a compact, production-minded integration between a React (Vite) frontend and an ERC20-compatible minting contract. This repo highlights why specific technologies were chosen — React for component-driven UI, Vite for fast iterative development, ethers.js for robust and portable contract interaction, MetaMask for standard wallet integration, and Solidity for on-chain logic.
+
+🌐 LIVE WEB: https://poc-react-ether.vercel.app/
 
 ## 📑 Table of contents
 - [⚙️ Features](#-features)
@@ -91,6 +93,12 @@ Notes:
 ## 🧪 Testing and debugging
 - Check the browser console for connection or transaction errors.
 - Ensure VITE_CONTRACT_ADDRESS points to a contract that implements the functions used (balanceOf, decimals, mint).
+
+## 🔍 Examples Using
+![Example 1](./docs/Example1.png)
+![Example 2](./docs/Example2.png)
+![Example 3](./docs/Example3.png)
+![Example 4](./docs/Example4.png)
 
 ## 🔮 Future improvements
 - Support for multiple networks via a UI selector.
