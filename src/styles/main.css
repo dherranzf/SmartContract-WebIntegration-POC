@@ -1,0 +1,22 @@
+.container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #222;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+button {
+  padding: 10px 20px;
+  margin-top: 12px;
+  background: #4f8cff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:disabled {
+  background: #888;
+  cursor: not-allowed;
+}
