@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { CONTRACT_ABI } from './resources/contractABI'
-import { switchToBaseNetwork } from './networkUtils'
-import { connectWallet } from './walletUtils'
-import { mintToken } from './mintUtils'
+import { connectWallet } from './services/walletService'
+import { mintToken } from './services/mintService'
 import MainMint from './components/MainMint'
 import './styles/main.css'
 

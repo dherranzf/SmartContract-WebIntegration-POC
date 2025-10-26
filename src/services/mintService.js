@@ -1,9 +1,10 @@
 import { ethers } from 'ethers';
 import { CONTRACT_ABI } from './resources/contractABI';
-import { switchToBaseNetwork } from './networkUtils';
+import { switchToBaseNetwork } from './services/networkService';
 
 export async function mintToken(isConnected, setIsMinting, CONTRACT_ADDRESS, BASE_CHAIN_ID) {
     if (!isConnected) return;
+    if (!window.ethereum) throw new Error('MetaMask not found');
     await switchToBaseNetwork(BASE_CHAIN_ID);
     setIsMinting(true);
     try {
@@ -13,9 +14,11 @@ export async function mintToken(isConnected, setIsMinting, CONTRACT_ADDRESS, BAS
         const tx = await contract.mintBAC();
         await tx.wait();
         alert('Token minted!');
+        return tx;
     } catch (error) {
         console.error('Mint error:', error);
         alert('Minting failed');
+        throw error;
     } finally {
         setIsMinting(false);
     }
