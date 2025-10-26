@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
 import { ethers } from 'ethers'
+import { CONTRACT_ABI } from './resources/contractABI'
 
 //Conract Configuration
 const CONTRACT_ADDRESS = '0xYourContractAddressHere'
 const BASE_CHAIN_ID = '0xASD'
-
-
-//Contract ABI
-const CONTRACT_ABI = [
-    // Replace with your contract's ABI
-]
 
 function App() {
     const [account, setAccount] = useState('');
@@ -17,7 +12,7 @@ function App() {
     const [isMinting, setIsMinting] = useState(false);
 
   // Connect to MetaMask
-const connectWallet = async () => {
+    const connectWallet = async () => {
         if (!window.ethereum) {
         alert('Please install MetaMask!')
         return
@@ -86,8 +81,6 @@ const connectWallet = async () => {
         }
     }
 
-  }
-
     return (
     <div className="container">
       <h1>Blockchain Accelerator</h1>
@@ -112,3 +105,6 @@ const connectWallet = async () => {
   )
 
 }
+
+
+export default App
